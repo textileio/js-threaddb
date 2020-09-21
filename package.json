@@ -82,7 +82,7 @@
     "@textile/threads-client": "^1.0.0-alpha.0",
     "@textile/threads-client-grpc": "^1.0.0-rc1",
     "@textile/threads-id": "^0.1.13",
-    "@types/json-schema": "^7.0.5",
+    "@types/json-schema": "^7.0.6",
     "@types/lodash": "^4.14.159",
     "@types/to-json-schema": "^0.2.0",
     "dexie": "^3.0.2",
