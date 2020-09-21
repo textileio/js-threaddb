@@ -1,0 +1,259 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>@textile/threaddb</title>
+	<meta name="description" content="Documentation for @textile/threaddb">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">@textile/threaddb</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1>@textile/threaddb</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<p>Javascript implementation of Textile&#39;s ThreadDB</p>
+				<p><a href="https://textile.io"><img src="https://img.shields.io/badge/made%20by-Textile-informational.svg" alt="Textile"></a>
+					<a href="https://slack.textile.io"><img src="https://img.shields.io/badge/slack-slack.textile.io-informational.svg" alt="Slack"></a>
+					<a href="./LICENSE"><img src="https://img.shields.io/github/license/textileio/js-threaddb.svg" alt="License"></a>
+				<a href="https://github.com/textileio/js-threaddb/releases/latest"><img src="https://img.shields.io/github/release/textileio/js-threaddb.svg" alt="Release"></a></p>
+				<p><img src="https://github.com/textileio/js-threaddb/workflows/Test/badge.svg" alt="Test">
+					<img src="https://github.com/textileio/js-threaddb/workflows/Review/badge.svg" alt="Review">
+				<a href="https://textileio.github.io/js-threaddb"><img src="https://github.com/textileio/js-threaddb/workflows/Docs/badge.svg" alt="Docs"></a></p>
+				<blockquote>
+					<p>An offline-first local db that syncs to the distributed web.</p>
+				</blockquote>
+				<p><strong>This project is pre-release, do not use it in production, breaking changes will still occur without notice.</strong></p>
+				<a href="#getting-help" id="getting-help" style="color: inherit; text-decoration: none;">
+					<h2>Getting help</h2>
+				</a>
+				<p>The Textile/Threads developers/community are active on <a href="https://slack.textile.io/">Slack</a> and
+					<a href="https://twitter.com/textileio">Twitter (@textileio)</a>, join us there for news, discussions,
+					questions, and status updates. Also, <a href="https://blog.textile.io">check out our blog</a> for the
+				latest posts and announcements.</p>
+				<p>If you think you&#39;ve found a bug in threaddb, please file a github issue. Take a look at our
+				comprehensive <a href="#contributing">contributor guide</a> for details on how to get started.</p>
+				<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
+					<h2>Getting Started</h2>
+				</a>
+				<a href="#development" id="development" style="color: inherit; text-decoration: none;">
+					<h3>Development</h3>
+				</a>
+				<p>Start by cloning and digging into this repo:</p>
+				<pre><code class="language-bash">git <span class="hljs-built_in">clone</span> git@github.com:textileio/js-threaddb.git
+<span class="hljs-built_in">cd</span> threaddb</code></pre>
+				<p>Next, install the required <code>npm</code> modules:</p>
+				<pre><code class="language-bash">npm i</code></pre>
+				<a href="#tests" id="tests" style="color: inherit; text-decoration: none;">
+					<h3>Tests</h3>
+				</a>
+				<p>For now, you&#39;ll need to have a local <code>threadd</code> daemon running. The easiest way to do this is via
+				<code>docker-compose</code>. You can use the following <code>docker-compose.yml</code> file:</p>
+				<pre><code class="language-yml"><span class="hljs-attr">version:</span> <span class="hljs-string">&quot;3&quot;</span>
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">threads:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">textile/go-threads:latest</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;./repo/threads:/data/threads&quot;</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">THRDS_HOSTADDR=/ip4/0.0.0.0/tcp/4006</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">THRDS_APIADDR=/ip4/0.0.0.0/tcp/6006</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">THRDS_APIPROXYADDR=/ip4/0.0.0.0/tcp/6007</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">THRDS_DEBUG=true</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;4006:4006&quot;</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;127.0.0.1:6006:6006&quot;</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;127.0.0.1:6007:6007&quot;</span></code></pre>
+				<p>With the above <code>yml</code> file, run the following:</p>
+				<pre><code class="language-bash">docker-compose pull
+docker-compose up</code></pre>
+				<p>And then start some tests:</p>
+				<pre><code class="language-bash">npm run <span class="hljs-built_in">test</span></code></pre>
+				<p>Test coverage is pretty comprehensive, and you should get a coverage report upon running the tests
+				(coverage is generated from the node tests):</p>
+				<pre><code class="language-bash">npm run <span class="hljs-built_in">test</span>:node</code></pre>
+				<p>Browser tests are run via <code>polendina</code>, and the tests are built on-the-fly using webpack (this is
+					the only thing webpack is used for). The <code>webpack.test.js</code> config is used to enable <code>polendina</code>
+				testing in typescript modules.</p>
+				<pre><code class="language-bash">npm run <span class="hljs-built_in">test</span>:browser</code></pre>
+				<a href="#build" id="build" style="color: inherit; text-decoration: none;">
+					<h3>Build</h3>
+				</a>
+				<p>We don&#39;t actually use <code>tsc</code> to build our javascript outputs. Instead, we use <code>rollup</code>, which
+					makes it easier to derive different output types (e.g., commonjs vs es modules vs type defs). To
+				create the relevant build outputs simply call:</p>
+				<pre><code class="language-bash">npm run build</code></pre>
+				<p>This should produce a dist folder with multiple output types. These are referenced in the
+					<code>package.json</code>&#39;s <code>exports</code> entry, so that the right module types are used in the right context
+					(i.e., <code>import</code> vs <code>require</code>). Note that an <code>iife</code> output for browsers is also created, though
+				the es modules should be the preferred option for browsers these days.</p>
+				<a href="#releasing" id="releasing" style="color: inherit; text-decoration: none;">
+					<h3>Releasing</h3>
+				</a>
+				<p>We&#39;ll try to be pretty serious about semantic versioning. To help us with this, we use conventional
+					commits (and some <code>commitlint</code> hooks/linters) as well as automatically-generated conventional
+				changelogs (via <code>standard-version</code>). To create a new version/release simply call:</p>
+				<pre><code class="language-bash">npm run version</code></pre>
+				<p>And then follow the standard <code>npm</code> publishing workflow from there.</p>
+				<a href="#environment" id="environment" style="color: inherit; text-decoration: none;">
+					<h3>Environment</h3>
+				</a>
+				<p>If you are working in vscode or vscodium, the following local settings are useful for testing:</p>
+				<pre><code class="language-json">{
+  <span class="hljs-attr">&quot;typescript.tsdk&quot;</span>: <span class="hljs-string">&quot;node_modules/typescript/lib&quot;</span>,
+  <span class="hljs-attr">&quot;mochaExplorer.files&quot;</span>: <span class="hljs-string">&quot;**/*.spec.ts&quot;</span>,
+  <span class="hljs-attr">&quot;mochaExplorer.esmLoader&quot;</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">&quot;mochaExplorer.exit&quot;</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">&quot;mochaExplorer.require&quot;</span>: [<span class="hljs-string">&quot;ts-node/register&quot;</span>, <span class="hljs-string">&quot;source-map-support/register&quot;</span>],
+  <span class="hljs-attr">&quot;mochaExplorer.launcherScript&quot;</span>: <span class="hljs-string">&quot;node_modules/mocha-explorer-launcher-scripts/nyc&quot;</span>,
+  <span class="hljs-attr">&quot;mochaExplorer.env&quot;</span>: {
+    <span class="hljs-attr">&quot;TS_NODE_FILES&quot;</span>: <span class="hljs-string">&quot;true&quot;</span>,
+    <span class="hljs-attr">&quot;TS_NODE_COMPILER_OPTIONS&quot;</span>: <span class="hljs-string">&quot;{\&quot;module\&quot;: \&quot;commonjs\&quot; }&quot;</span>
+  }
+}</code></pre>
+				<p>These settings pair nicely with the <code>hbenl.vscode-mocha-test-adapter</code> and
+					<code>ryanluker.vscode-coverage-gutters</code> plugins. I also highly recommend <code>dbaeumer.vscode-eslint</code> for
+				in-editor linting. Note that we also use prettier for code formatting (called via eslint).</p>
+				<a href="#api" id="api" style="color: inherit; text-decoration: none;">
+					<h2>API</h2>
+				</a>
+				<p>See <a href="https://textileio.github.io/threaddb">https://textileio.github.io/js-threaddb</a>, which includes
+				the technical API docs for all subpackages.</p>
+				<a href="#maintainers" id="maintainers" style="color: inherit; text-decoration: none;">
+					<h2>Maintainers</h2>
+				</a>
+				<p><a href="https://github.com/carsonfarmer">Carson Farmer</a></p>
+				<a href="#contributing" id="contributing" style="color: inherit; text-decoration: none;">
+					<h2>Contributing</h2>
+				</a>
+				<p>PRs gratefully accepted! Please see above for details on getting started.</p>
+				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+					<h2>License</h2>
+				</a>
+				<p><a href="./LICENSE">MIT</a> (c) 2019-2020 Textile</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/collection.html" class="tsd-kind-icon">Collection</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/database.html" class="tsd-kind-icon">Database</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/remote.html" class="tsd-kind-icon">Remote</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/collectionconfig.html" class="tsd-kind-icon">Collection<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/documentinstanceconstructor.html" class="tsd-kind-icon">Document<wbr>Instance<wbr>Constructor</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/index.html" class="tsd-kind-icon">Index</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/instance.html" class="tsd-kind-icon">Instance</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/remoteconfig.html" class="tsd-kind-icon">Remote<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#document" class="tsd-kind-icon">Document</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#threadidname" class="tsd-kind-icon">ThreadIDName</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#encoder" class="tsd-kind-icon">encoder</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#documentinstanceclassfactory" class="tsd-kind-icon">Document<wbr>Instance<wbr>Class<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="globals.html#errors" class="tsd-kind-icon">Errors</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer>
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
