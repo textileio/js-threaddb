@@ -77,7 +77,7 @@
     "@improbable-eng/grpc-web": "^0.13.0",
     "@ipld/block": "^6.0.3",
     "@textile/context": "^0.6.8",
-    "@textile/crypto": "^0.1.0",
+    "@textile/crypto": "^0.1.1",
     "@textile/grpc-transport": "0.0.3",
     "@textile/threads-client": "^1.0.0-alpha.0",
     "@textile/threads-client-grpc": "^1.0.0-rc1",
