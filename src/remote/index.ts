@@ -425,7 +425,11 @@ export class Remote {
         await trans.end();
       } catch (err) {
         // In theory, err will be due to remote transaction calls... abort!
-        await trans.discard();
+        try {
+          await trans.discard();
+        } catch (err) {
+          // Nothing more we can do here
+        }
         throw err; // Rethrow for external consumers
       }
       // TODO: Maybe return updated hash of head update.
