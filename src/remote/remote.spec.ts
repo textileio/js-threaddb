@@ -275,8 +275,8 @@ describe("remote", function () {
       const total = await dogs.count();
       expect(total).to.equal(2);
       const q = new Where("age").gt(0);
-      const { instancesList } = await client.find(threadID, "dogs", q);
-      expect(instancesList).to.have.lengthOf(2);
+      const instances = await client.find(threadID, "dogs", q);
+      expect(instances).to.have.lengthOf(2);
     });
 
     it("should pull changes from remote and automatically update local db", async function () {
