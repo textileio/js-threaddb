@@ -367,6 +367,8 @@ export class Remote {
 
     // Blast thru provided collection names...
     for (const collectionName of collections) {
+      // Check that table exists locally...
+      this.storage.table(collectionName);
       // Filter changes by collection
       const filtered = localChanges.where("name").equals(collectionName);
       if ((await filtered.count()) < 1) {

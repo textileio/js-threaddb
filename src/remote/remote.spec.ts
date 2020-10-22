@@ -10,6 +10,7 @@ import { grpc } from "@improbable-eng/grpc-web";
 import { Where } from "@textile/threads-client";
 
 const databaseName = "remote";
+const serviceHost = "http://localhost:6007";
 
 describe("remote", function () {
   // Default Dog interface to work with types
@@ -81,6 +82,7 @@ describe("remote", function () {
     beforeEach(async function () {
       // Need to authorize before running any tests...
       // But we _could_ cache token if we had one from before...
+      remote.set({ serviceHost });
       await remote.authorize(privateKey);
     });
 
@@ -154,15 +156,11 @@ describe("remote", function () {
       expect(id1).to.not.be.undefined;
       expect(ThreadID.fromString(id1).toString()).to.equal(id1);
       // Should throw here because we're trying to use an existing db id
-      try {
-        // Clear cached id just to be sure we're pulling from the db
-        remote.id = undefined;
-        // Leave off id to default to existing id (stored in db)
-        await remote.initialize(); // Leave off id
-        throw shouldHaveThrown;
-      } catch (err) {
-        expect(err).to.equal(Errors.ThreadExists);
-      }
+      // Clear cached id just to be sure we're pulling from the db
+      remote.id = undefined;
+      // Leave off id to default to existing id (stored in db)
+      await remote.initialize(); // Leave off id
+
       // Try with new random one, this isn't a good idea in practice, but is
       // allowed because we want to be able to migrate etc in the future
       // Application logic should be used to prevent this bad behavior for now
@@ -231,6 +229,7 @@ describe("remote", function () {
     before(async function () {
       // Need to authorize before running any tests...
       // But we _could_ cache token if we had one from before...
+      remote.set({ serviceHost });
       await remote.authorize(privateKey);
     });
 
