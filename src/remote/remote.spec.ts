@@ -267,7 +267,7 @@ describe("remote", function () {
       await remote.push("dogs");
       expect(await changes.count()).to.equal(0);
       // Trying again should not lead to any issues
-      await remote.push(); // Push everything this time... except we have none!
+      await remote.push("dogs"); // Push everything this time... except we have none!
       // Low level checks
       const client = createDbClient(remote.config);
       const dogs = dexie.table("dogs");

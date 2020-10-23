@@ -400,8 +400,17 @@ export class Remote {
               }
             }
             case "add": {
-              await trans.create([obj.after]);
-              break;
+              try {
+                await trans.create([obj.after]);
+                break;
+              } catch (err) {
+                if (err.message.includes("already existent instance")) {
+                  await trans.save([obj.after]);
+                  break;
+                } else {
+                  throw err;
+                }
+              }
             }
             case "delete": {
               try {
