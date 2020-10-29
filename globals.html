@@ -93,6 +93,7 @@
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-variable"><a href="globals.html#threadidname" class="tsd-kind-icon">ThreadIDName</a></li>
+								<li class="tsd-kind-variable"><a href="globals.html#decoder" class="tsd-kind-icon">decoder</a></li>
 								<li class="tsd-kind-variable"><a href="globals.html#encoder" class="tsd-kind-icon">encoder</a></li>
 							</ul>
 						</section>
@@ -144,7 +145,17 @@
 					<div class="tsd-signature tsd-kind-icon">ThreadIDName<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"thread-id"</span><span class="tsd-signature-symbol"> = &quot;thread-id&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L33">remote/index.ts:33</a></li>
+							<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L35">remote/index.ts:35</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable">
+					<a name="decoder" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> decoder</h3>
+					<div class="tsd-signature tsd-kind-icon">decoder<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">TextDecoder</span><span class="tsd-signature-symbol"> = new TextDecoder()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L38">remote/index.ts:38</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -154,7 +165,7 @@
 					<div class="tsd-signature tsd-kind-icon">encoder<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">TextEncoder</span><span class="tsd-signature-symbol"> = new TextEncoder()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L35">remote/index.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L37">remote/index.ts:37</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -201,7 +212,7 @@
 					<div class="tsd-signature tsd-kind-icon">Errors<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L23">remote/index.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L25">remote/index.ts:25</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -210,7 +221,7 @@
 						<div class="tsd-signature tsd-kind-icon">Change<wbr>Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> = new Error(&quot;Unable to process db change(s)&quot;)</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L28">remote/index.ts:28</a></li>
+								<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L30">remote/index.ts:30</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -220,7 +231,7 @@
 						<div class="tsd-signature tsd-kind-icon">Local<wbr>Changes<wbr>Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> = new Error(&quot;Unpushed local changes&quot;)</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L29">remote/index.ts:29</a></li>
+								<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L31">remote/index.ts:31</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -230,7 +241,7 @@
 						<div class="tsd-signature tsd-kind-icon">Missing<wbr>DbError<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> = new Error(&quot;Missing remote db/thread&quot;)</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L25">remote/index.ts:25</a></li>
+								<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L27">remote/index.ts:27</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -240,7 +251,7 @@
 						<div class="tsd-signature tsd-kind-icon">No<wbr>Remote<wbr>Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> = new Error(&quot;No remote service host specified&quot;)</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L26">remote/index.ts:26</a></li>
+								<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L28">remote/index.ts:28</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -250,7 +261,7 @@
 						<div class="tsd-signature tsd-kind-icon">Remote<wbr>Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> = new Error(&quot;Remote operation failed&quot;)</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L27">remote/index.ts:27</a></li>
+								<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L29">remote/index.ts:29</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -260,7 +271,7 @@
 						<div class="tsd-signature tsd-kind-icon">Thread<wbr>Exists<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> = new Error(&quot;Remote db/thread already exists&quot;)</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L30">remote/index.ts:30</a></li>
+								<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L32">remote/index.ts:32</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -270,7 +281,7 @@
 						<div class="tsd-signature tsd-kind-icon">ThreadIDError<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol"> = new Error(&quot;Missing/invalid thread id&quot;)</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L24">remote/index.ts:24</a></li>
+								<li>Defined in <a href="https://github.com/textileio/js-threaddb/blob/main/src/remote/index.ts#L26">remote/index.ts:26</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -316,6 +327,9 @@
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#threadidname" class="tsd-kind-icon">ThreadIDName</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#decoder" class="tsd-kind-icon">decoder</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#encoder" class="tsd-kind-icon">encoder</a>
