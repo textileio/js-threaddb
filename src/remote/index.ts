@@ -13,7 +13,7 @@ import {
 } from "./grpc";
 import type { Identity } from "@textile/crypto";
 import ThreadID from "@textile/threads-id";
-import { DBInfo } from "@textile/threads-client";
+import { DBInfo, Where } from "@textile/threads-client";
 import { grpc } from "@improbable-eng/grpc-web";
 import {
   Change,
@@ -375,11 +375,14 @@ export class Remote {
         return; // Early out if no changes
       }
       // For each change, create transaction item and switch on type
-      const trans = client.writeTransaction(threadID, collectionName);
+      // TODO: Currently, go-threads underlying db doesn't support isolation in transactions
+      // so we have to do these as one-off transactions for now so that queries reflect reality
+      // this is **not** ideal, as we lose the atomicity of pushes...
+      // const trans = client.writeTransaction(threadID, collectionName);
       try {
         // See above, we need to actually materialize the array it seems?
         const changes = await filtered.toArray();
-        await trans.start();
+        // await trans.start();
         let count = 0;
         for (const obj of changes) {
           switch (obj.type) {
@@ -388,37 +391,35 @@ export class Remote {
               // TODO: https://github.com/textileio/go-threads/pull/450
               try {
                 // FIXME: Workaround: we check first, and if error, try to create
-                await trans.verify([obj.after]);
-                await trans.save([obj.after]);
+                // await trans.verify([obj.after]);
+                // await trans.save([obj.after]);
+                await client.save(threadID, collectionName, [obj.after]);
                 break;
               } catch (err) {
-                if (!err.message.includes("validation failed")) {
-                  console.error(err);
-                  break;
-                }
-                // Pass thru to add
+                throw err;
+                // break;
               }
             }
             case "add": {
               try {
-                await trans.create([obj.after]);
+                // await trans.verify([obj.after]);
+                // await trans.save([obj.after]);
+                await client.create(threadID, collectionName, [obj.after]);
                 break;
               } catch (err) {
-                if (err.message.includes("already existent instance")) {
-                  await trans.save([obj.after]);
-                  break;
-                } else {
-                  throw err;
-                }
+                throw err;
+                // break;
               }
             }
             case "delete": {
               try {
-                await trans.delete([obj.key]);
+                // await trans.delete([obj.key]);
+                await client.delete(threadID, collectionName, [obj.key]);
               } catch (err) {
                 // TODO: https://github.com/textileio/go-threads/pull/450
-                console.error(err); // We'll ignore this though
-                break;
+                // console.error(err); // We'll ignore this though
+                throw err;
+                // break;
               }
             }
           }
@@ -431,11 +432,13 @@ export class Remote {
         // Won't know why we made it this far, so just use a generic error
         if (count !== deleted) throw Errors.ChangeError;
         // We can safely end the transaction
-        await trans.end();
+        // FIXME: Since we don't have a transaction to rollback, we're in some trouble here!
+        // await trans.end();
       } catch (err) {
         // In theory, err will be due to remote transaction calls... abort!
         try {
-          await trans.discard();
+          // await trans.discard();
+          // FIXME: We need to be able to discard **something** here
         } catch (err) {
           // Nothing more we can do here
         }
@@ -544,10 +547,15 @@ export class Remote {
       // Now we also need to drop anything locally that wasn't in our remote
       await table.filter((obj) => !keys.includes(obj._id)).delete();
     }
+    const isModUpdate = (ops: any[]) => {
+      const [op0] = ops;
+      return op0.op === "add" && op0.path == "/_mod";
+    };
     // TODO: Maybe return the ids of modified/deleted instances?
     const changes = this.storage.table<Change, string>(ChangeTableName);
+    const test = await changes.toArray();
     const values = await changes
-      .filter((change) => change.ops.length > 0)
+      .filter((change) => change.ops.length > 0 && !isModUpdate(change.ops))
       .toArray();
     // Drop these "fake" changes
     await changes.clear();

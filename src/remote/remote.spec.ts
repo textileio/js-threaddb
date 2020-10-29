@@ -258,7 +258,6 @@ describe("remote", function () {
     });
 
     it("should push tracked changes to a remote when calling push", async function () {
-      this.timeout(5000);
       const threadID = ThreadID.fromString(remote.id ?? "");
       // Low level check to make sure we have our changes
       const changes = dexie.table(ChangeTableName);
@@ -275,7 +274,7 @@ describe("remote", function () {
       expect(total).to.equal(2);
       const q = new Where("age").gt(0);
       const instances = await client.find(threadID, "dogs", q);
-      expect(instances).to.have.lengthOf(2);
+      expect(instances).to.have.lengthOf(total);
     });
 
     it("should pull changes from remote and automatically update local db", async function () {
