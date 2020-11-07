@@ -1,0 +1,44 @@
+{
+  "name": "threaddb-chat",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@fluentui/react-icons-northstar": "^0.51.2",
+    "@fluentui/react-northstar": "^0.51.2",
+    "@textile/crypto": "^0.1.2",
+    "@textile/threaddb": "0.0.2",
+    "dotenv": "^8.2.0",
+    "luxon": "^1.25.0",
+    "query-string": "^6.13.6",
+    "randomcolor": "^0.6.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "4.0.0",
+    "use-query-params": "^1.1.8",
+    "use-reducer-async": "^2.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
