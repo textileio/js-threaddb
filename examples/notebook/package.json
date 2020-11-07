@@ -1,0 +1,14 @@
+{
+  "name": "threaddb-notebook",
+  "version": "0.0.1",
+  "description": "Demo of threaddb as a notebook",
+  "main": "index.js",
+  "author": "Textile <contact@textile.io>",
+  "license": "MIT",
+  "dependencies": {
+    "@textile/crypto": "^0.1.2",
+    "@textile/threaddb": "^0.0.2",
+    "@textile/threads-client": "^1.1.0",
+    "@textile/threads-id": "^0.1.16"
+  }
+}

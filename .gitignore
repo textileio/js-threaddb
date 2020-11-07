@@ -129,3 +129,5 @@ dist
 docs/
 repo/
 docker-compose*.yml
+
+.DS_Store
