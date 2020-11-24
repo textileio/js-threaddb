@@ -129,14 +129,13 @@ docker-compose up</code></pre>
 				<a href="#build" id="build" style="color: inherit; text-decoration: none;">
 					<h3>Build</h3>
 				</a>
-				<p>We don&#39;t actually use <code>tsc</code> to build our javascript outputs. Instead, we use <code>rollup</code>, which
-					makes it easier to derive different output types (e.g., commonjs vs es modules vs type defs). To
-				create the relevant build outputs simply call:</p>
+				<p>We use <code>tsc</code> to build our nodejs-based javascript outputs, and <code>rollup</code> for a single0-file bundle.
+					This makes it easier to derive different output types (e.g., commonjs vs es modules vs type defs).
+				To create the relevant build outputs simply call:</p>
 				<pre><code class="language-bash">npm run build</code></pre>
 				<p>This should produce a dist folder with multiple output types. These are referenced in the
 					<code>package.json</code>&#39;s <code>exports</code> entry, so that the right module types are used in the right context
-					(i.e., <code>import</code> vs <code>require</code>). Note that an <code>iife</code> output for browsers is also created, though
-				the es modules should be the preferred option for browsers these days.</p>
+				(i.e., <code>import</code> vs <code>require</code>). Note that a single-file ES6 module is output for browsers.</p>
 				<a href="#releasing" id="releasing" style="color: inherit; text-decoration: none;">
 					<h3>Releasing</h3>
 				</a>
@@ -167,7 +166,7 @@ docker-compose up</code></pre>
 				<a href="#api" id="api" style="color: inherit; text-decoration: none;">
 					<h2>API</h2>
 				</a>
-				<p>See <a href="https://textileio.github.io/threaddb">https://textileio.github.io/js-threaddb</a>, which includes
+				<p>See <a href="https://textileio.github.io/js-threaddb/">https://textileio.github.io/js-threaddb/</a>, which includes
 				the technical API docs for all subpackages.</p>
 				<a href="#maintainers" id="maintainers" style="color: inherit; text-decoration: none;">
 					<h2>Maintainers</h2>
