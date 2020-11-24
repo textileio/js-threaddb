@@ -31,6 +31,7 @@ export default {
     typescript(),
     terser(),
   ],
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   onwarn(warning, warn) {
     // suppress eval warnings
     if (warning.code === "EVAL") return;
