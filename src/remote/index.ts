@@ -21,6 +21,12 @@ import {
   StashTableName,
   MetaTableName,
 } from "../middleware/changes";
+import { encryptedSchema } from "../utils/spec.utils";
+import {
+  decryptObject,
+  EncryptedWithId,
+  encryptObject,
+} from "../crypto_utils_poc/crypto";
 
 export const Errors = {
   ThreadIDError: new Error("Missing/invalid thread id"),
@@ -315,7 +321,8 @@ export class Remote {
         .filter((table) => !table.name.startsWith("_"))
         .map(async (table) => ({
           name: table.name,
-          schema: encoder.encode(JSON.stringify(await table.getSchema())),
+          // POC (client-side encryption) use schema of encrypted object for storage on the remote:
+          schema: encoder.encode(JSON.stringify(encryptedSchema)),
           indexesList: [],
           writevalidator: "", // TODO: Update this once we support validators/filters
           readfilter: "",
@@ -392,7 +399,13 @@ export class Remote {
               // FIXME: https://github.com/textileio/go-threads/issues/440
               // TODO: https://github.com/textileio/go-threads/pull/450
               try {
-                await trans.save([obj.after]);
+                // POC (client-side encryption): Encrypt object before updating on remote
+                const encryptedObject = encryptObject(obj.after);
+                const withId: EncryptedWithId = {
+                  _id: obj.after._id,
+                  base64: encryptedObject,
+                };
+                await trans.save([withId]);
                 // await client.save(threadID, collectionName, [obj.after]);
                 break;
               } catch (err) {
@@ -401,7 +414,13 @@ export class Remote {
             }
             case "add": {
               try {
-                await trans.create([obj.after]);
+                // POC (client-side encryption): Encrypt object before creating on remote
+                const encryptedObject = encryptObject(obj.after);
+                const withId: EncryptedWithId = {
+                  _id: obj.after._id,
+                  base64: encryptedObject,
+                };
+                await trans.create([withId]);
                 // await client.create(threadID, collectionName, [obj.after]);
                 break;
               } catch (err) {
@@ -537,8 +556,18 @@ export class Remote {
     for (const collectionName of collections) {
       const instances = await client.find(threadID, collectionName, {});
       const table = this.storage.table(collectionName);
+
+      // POC (client-side encryption): Decrypt remote data before it is applied to the local database
+      const instancesDecrypted: unknown[] = [];
+      for (let i = 0; i < instances.length; i++) {
+        instancesDecrypted.push({
+          _mod: (instances[i] as any)._mod,
+          ...decryptObject((instances[i] as any).base64 as string),
+        });
+      }
+
       // Remote is our source of thruth, we completely overwrite anything local that is different
-      const keys = await table.bulkPut(instances, { allKeys: true });
+      const keys = await table.bulkPut(instancesDecrypted, { allKeys: true });
       // Now we also need to drop anything locally that wasn't in our remote
       await table.filter((obj) => !keys.includes(obj._id)).delete();
     }
