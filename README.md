@@ -53,7 +53,7 @@ Encryption had to be applied, and schema converted, before data is pushed to the
 
 One way to achieve this modified behavior using a plugin would be to allow passing three callbacks to the remote code to change its behavior.
 
-### Get schema for collection
+### Get remote schema for collection
 
 ```typescript
 /**
