@@ -8,7 +8,7 @@ Client-side encryption options for document storage solutions are limited.  One 
 
 One solution to this problem is to store search indexes locally and keep data encrypted on the remote.  A local-first database solution like js-threaddb, Dexie, or pouchdb, is ideal to enable the encrypt-on-remote / search-on-local approach to data privacy.
 
-## Approach in js-threadb
+## Approach in js-threaddb
 
 The most straightforward approach to the "encrypt-on-remote" requirement is to encrypt data on push to the remote, and decrypt data on pull from the remote.  Using the prior-art [dexie-encrypted](https://github.com/mark43/dexie-encrypted), and underlying synchronous js crypto library [tweetnacl](https://github.com/dchest/tweetnacl-js) as a starting point, this rough POC shows how encryption can be performed to and from the textile remote.
 
