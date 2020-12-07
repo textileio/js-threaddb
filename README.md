@@ -59,7 +59,7 @@ One way to achieve this modified behavior using a plugin would be to allow passi
 /**
  * A middleware-provided function to retrieve the correct remote schema for a given collection
  */
-function getRemoteCollectionSchema(collectionName): JSONSchema
+function getRemoteCollectionSchema(collectionName: string): JSONSchema
 ```
 
 ### Pull from remote for collection
@@ -69,7 +69,7 @@ function getRemoteCollectionSchema(collectionName): JSONSchema
  * A middleware-provided function to preprocess data inbound from the remote
  * Would allow middleware to decrypt pulled data, and convert it to the correct local schema, before it is applied to the local database
  */
-function preProcessRemotePull(collectionName, processor: (remoteData: any) => any): JSONSchema
+function preProcessRemotePull(collectionName: string, processor: (remoteData: any) => any): JSONSchema
 ```
 
 ### Push to remote for collection
@@ -79,7 +79,7 @@ function preProcessRemotePull(collectionName, processor: (remoteData: any) => an
  * A middleware-provided function to process local data before it is sent to the remote
  * Would allow middleware to encrypt data, and convert it to the correct remote schema, before it is pushed to the remote
  */
-function preProcessRemotePush(collectionName, processor: (localData: any) => any): JSONSchema
+function preProcessRemotePush(collectionName: string, processor: (localData: any) => any): JSONSchema
 ```
 
 
