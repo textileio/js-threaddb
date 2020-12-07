@@ -1,158 +1,86 @@
-Javascript implementation of Textile's ThreadDB
+# Remote encryption POC - Textile js-threaddb
 
-[![Textile](https://img.shields.io/badge/made%20by-Textile-informational.svg)](https://textile.io)
-[![Slack](https://img.shields.io/badge/slack-slack.textile.io-informational.svg)](https://slack.textile.io)
-[![License](https://img.shields.io/github/license/textileio/js-threaddb.svg)](./LICENSE)
-[![Release](https://img.shields.io/npm/v/@textile/threaddb.svg)](https://www.npmjs.com/package/@textile/threaddb)
+## Motivation
 
-![Test](https://github.com/textileio/js-threaddb/workflows/Test/badge.svg)
-![Review](https://github.com/textileio/js-threaddb/workflows/Review/badge.svg)
-[![Docs](https://github.com/textileio/js-threaddb/workflows/Docs/badge.svg)](https://textileio.github.io/js-threaddb)
+Apps like Signal for messaging, LastPass for password management, and Cryptomator for file storage provide client-side encryption.  Client-side encryption is the most secure option for privacy-conscious users, because even in the event of an internal or external hack into the remote host's filesystem or applications, user data is not readble, assuming the hacker does not have the encryption key.  
 
-> An offline-first local db that syncs to the distributed web.
+Client-side encryption options for document storage solutions are limited.  One reason for this is that most search providers (e.g. Elasticsearch, or in-database search options using database indexes) perform search on the remote.  Because encrypted data cannot be searched (except in limited cases using property-preserving encryption), having data encrypted on the remote precludes performing searches on the remote.
 
-**This project is pre-release, do not use it in production, breaking changes will still occur without notice.**
+One solution to this problem is to store search indexes locally and keep data encrypted on the remote.  A local-first database solution like js-threaddb, Dexie, or pouchdb, is ideal to enable the encrypt-on-remote / search-on-local approach to data privacy.
 
-## Getting help
+## Approach in js-threaddb
 
-The Textile/Threads developers/community are active on [Slack](https://slack.textile.io/) and
-[Twitter (@textileio)](https://twitter.com/textileio), join us there for news, discussions,
-questions, and status updates. Also, [check out our blog](https://blog.textile.io) for the
-latest posts and announcements.
+The most straightforward approach to the "encrypt-on-remote" requirement is to encrypt data on push to the remote, and decrypt data on pull from the remote.  Using the prior-art [dexie-encrypted](https://github.com/mark43/dexie-encrypted), and underlying synchronous js crypto library [tweetnacl](https://github.com/dchest/tweetnacl-js) as a starting point, this rough POC shows how encryption can be performed to and from the textile remote.
 
-If you think you've found a bug in threaddb, please file a github issue. Take a look at our
-comprehensive [contributor guide](#contributing) for details on how to get started.
+### Remote schema
 
-## Getting Started
+The approach of this POC is to use the following schema for data storage on the remote.  By keeping _id decrypted on the remote, data can be accessed quickly by an _id index, while all other data is encrypted and stored in base64 string format.
 
-### Development
+```typescript
+export const encryptedSchema: JSONSchema = {
+  $schema: "http://json-schema.org/draft-07/schema#",
+  title: "Person",
+  description: "Encrypted person schema",
+  type: "object",
 
-Start by cloning and digging into this repo:
-
-```bash
-git clone git@github.com:textileio/js-threaddb.git
-cd threaddb
+  properties: {
+    _id: {
+      description: "Field to contain ulid-based instance id",
+      type: "string",
+    },
+    base64: {
+      description: "base64 encoded data",
+      type: "string",
+    }
+  },
+  required: ["_id", "base64"],
+};
 ```
 
-Next, install the required `npm` modules:
+## Requirements
 
-```bash
-npm i
+To enable this approach, the following modifications had to be made to js-threaddb
+
+### Remote schema differs from local schema
+
+Because the remote schema is encrypted, the remote schema must differ from the local schema.
+
+### Push and pull functions in remote
+
+Encryption had to be applied, and schema converted, before data is pushed to the remote.  Similarly, decryption had to be applied, and schema converted, when data is pulled from the remote.
+
+## Possible plugin approach
+
+One way to achieve this modified behavior using a plugin would be to allow passing three callbacks to the remote code to change its behavior.
+
+### Get remote schema for collection
+
+```typescript
+/**
+ * A middleware-provided function to retrieve the correct remote schema for a given collection
+ */
+function getRemoteCollectionSchema(collectionName: string): JSONSchema
 ```
 
-### Tests
+### Pull from remote for collection
 
-For now, you'll need to have a local `threadd` daemon running. The easiest way to do this is via
-`docker-compose`. You can use the following `docker-compose.yml` file:
-
-```yml
-version: "3"
-services:
-  threads:
-    image: textile/go-threads:latest
-    volumes:
-      - "./repo/threads:/data/threads"
-    environment:
-      - THRDS_HOSTADDR=/ip4/0.0.0.0/tcp/4006
-      - THRDS_APIADDR=/ip4/0.0.0.0/tcp/6006
-      - THRDS_APIPROXYADDR=/ip4/0.0.0.0/tcp/6007
-      - THRDS_DEBUG=true
-    ports:
-      - "4006:4006"
-      - "127.0.0.1:6006:6006"
-      - "127.0.0.1:6007:6007"
+```typescript
+/**
+ * A middleware-provided function to preprocess data inbound from the remote
+ * Would allow middleware to decrypt pulled data, and convert it to the correct local schema, before it is applied to the local database
+ */
+function preProcessRemotePull(collectionName: string, processor: (remoteData: any) => any): JSONSchema
 ```
 
-With the above `yml` file, run the following:
+### Push to remote for collection
 
-```bash
-docker-compose pull
-docker-compose up
+```typescript
+/**
+ * A middleware-provided function to process local data before it is sent to the remote
+ * Would allow middleware to encrypt data, and convert it to the correct remote schema, before it is pushed to the remote
+ */
+function preProcessRemotePush(collectionName: string, processor: (localData: any) => any): JSONSchema
 ```
 
-And then start some tests:
 
-```bash
-npm run test
-```
 
-Test coverage is pretty comprehensive, and you should get a coverage report upon running the tests
-(coverage is generated from the node tests):
-
-```bash
-npm run test:node
-```
-
-Browser tests are run via `polendina`, and the tests are built on-the-fly using webpack (this is
-the only thing webpack is used for). The `webpack.test.js` config is used to enable `polendina`
-testing in typescript modules.
-
-```bash
-npm run test:browser
-```
-
-### Build
-
-We use `tsc` to build our nodejs-based javascript outputs, and `rollup` for a single0-file bundle.
-This makes it easier to derive different output types (e.g., commonjs vs es modules vs type defs).
-To create the relevant build outputs simply call:
-
-```bash
-npm run build
-```
-
-This should produce a dist folder with multiple output types. These are referenced in the
-`package.json`'s `exports` entry, so that the right module types are used in the right context
-(i.e., `import` vs `require`). Note that a single-file ES6 module is output for browsers.
-
-### Releasing
-
-We'll try to be pretty serious about semantic versioning. To help us with this, we use conventional
-commits (and some `commitlint` hooks/linters) as well as automatically-generated conventional
-changelogs (via `standard-version`). To create a new version/release simply call:
-
-```bash
-npm run version
-```
-
-And then follow the standard `npm` publishing workflow from there.
-
-### Environment
-
-If you are working in vscode or vscodium, the following local settings are useful for testing:
-
-```json
-{
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "mochaExplorer.files": "**/*.spec.ts",
-  "mochaExplorer.esmLoader": true,
-  "mochaExplorer.exit": true,
-  "mochaExplorer.require": ["ts-node/register", "source-map-support/register"],
-  "mochaExplorer.launcherScript": "node_modules/mocha-explorer-launcher-scripts/nyc",
-  "mochaExplorer.env": {
-    "TS_NODE_FILES": "true",
-    "TS_NODE_COMPILER_OPTIONS": "{\"module\": \"commonjs\" }"
-  }
-}
-```
-
-These settings pair nicely with the `hbenl.vscode-mocha-test-adapter` and
-`ryanluker.vscode-coverage-gutters` plugins. I also highly recommend `dbaeumer.vscode-eslint` for
-in-editor linting. Note that we also use prettier for code formatting (called via eslint).
-
-## API
-
-See [https://textileio.github.io/js-threaddb/](https://textileio.github.io/js-threaddb/), which includes
-the technical API docs for all subpackages.
-
-## Maintainers
-
-[Carson Farmer](https://github.com/carsonfarmer)
-
-## Contributing
-
-PRs gratefully accepted! Please see above for details on getting started.
-
-## License
-
-[MIT](./LICENSE) (c) 2019-2020 Textile

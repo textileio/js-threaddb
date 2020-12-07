@@ -8,6 +8,7 @@ import { createDbClient } from "./grpc";
 import { NewDexie } from "../utils";
 import { grpc } from "@improbable-eng/grpc-web";
 import { Where } from "@textile/threads-client";
+import { encryptObject } from "../crypto_utils_poc/crypto";
 
 const databaseName = "remote";
 const serviceHost = "http://localhost:6007";
@@ -301,7 +302,14 @@ describe("remote", function () {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       await client.delete(threadID, "dogs", [array[0]._id!]);
       array[1].name = "Mod";
-      await client.save(threadID, "dogs", [array[1]]);
+
+      // Remote schema expects encrypted format
+      const array1encrypted = {
+        _id: array[1]._id,
+        base64: encryptObject(array[1] as any),
+      };
+
+      await client.save(threadID, "dogs", [array1encrypted]);
       const changed2 = await remote.pull("dogs");
       expect(changed2).to.have.lengthOf(2);
       expect(await dogs.count()).to.equal(1);
