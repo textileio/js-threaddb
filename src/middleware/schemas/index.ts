@@ -18,8 +18,8 @@ export type JSONType = JSONSchema4Type; // | JSONSchema6Type | JSONSchema7Type;
 
 declare module "dexie" {
   export interface Table {
-    setSchema(schema?: JSONSchema): Promise<void>;
-    getSchema(): Promise<JSONSchema>;
+    setSchema(schema?: JSONSchema | any): Promise<void>;
+    getSchema(): Promise<JSONSchema | any>;
   }
 }
 
@@ -46,7 +46,7 @@ export function createSchemaMiddleware(core: DBCore): DBCore {
           const pair = await core
             .table(SchemasTableName)
             .get({ key: tableName, trans: req.trans });
-          const schema: JSONSchema = pair?.schema ?? defaultSchema;
+          const schema: JSONSchema | any = pair?.schema ?? defaultSchema;
           const validator = new Ajv({ useDefaults: true }).compile(schema);
           // We only need to worry about validation when mutating data
           try {

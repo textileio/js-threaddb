@@ -29,7 +29,7 @@ export interface CollectionConfig {
   /**
    * The JSON Schema definition for instance validation
    */
-  schema?: JSONSchema;
+  schema?: JSONSchema | any;
   /**
    * A set of fields to use for indexing
    */
