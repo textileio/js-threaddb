@@ -106,7 +106,7 @@ export class Database {
    * Get an existing local collection.
    * @param name The name of the collection.
    */
-  collection<T = unknown>(name: string): Collection<T> | undefined {
+  collection<T = any>(name: string): Collection<T> | undefined {
     let collection = this.collectionMap.get(name);
     if (collection !== undefined) {
       return collection as Collection<T>;
