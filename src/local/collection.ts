@@ -130,7 +130,7 @@ export class Collection<T = unknown> {
    * This does not automatically commit the instance to the collection.
    * @param data The input data to use when initializing the document.
    */
-  create(data?: T): Document<T> & Instance {
+  create(data?: T & { _id?: string }): Document<T> & Instance {
     // TODO: Create is actually used differently in the Go clients, should we rename this?
     const cls = this.table.schema.mappedClass;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
